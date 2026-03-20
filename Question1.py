@@ -1,37 +1,31 @@
-from selenium.webdriver import Chrome, ChromeOptions
+from selenium.webdriver import Chrome,ChromeOptions
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
 o = ChromeOptions()
-o.add_experimental_option("detach", True)
-
+o.add_experimental_option("detach",True)
 driver = Chrome(options=o)
+
+driver.get("https://www.prokabaddi.com/")
+
 driver.maximize_window()
 
-driver.get("https://www.saucedemo.com/")
+driver.implicitly_wait(10)
 
-wait = WebDriverWait(driver, 10)
+driver.find_element(By.XPATH,"//a[@href='https://www.prokabaddi.com/standings']").click()
 
-username = wait.until(
-    EC.visibility_of_element_located((By.ID, "user-name"))
-)
-username.send_keys("standard_user")
+MatchPlay = driver.find_element(By.XPATH,'//p[contains(text(),"Jaipur Pink Panthers")]/../../../..//div[@class="table-data matches-play"]//p').text
+print("Matches Played : ", MatchPlay)
 
+MatchWon = driver.find_element(By.XPATH,'//p[contains(text(),"Jaipur Pink Panthers")]/../../../..//div[@class="table-data matches-won"]//p').text
+print("Matches Won : ", MatchWon)
 
-password = wait.until(
-    EC.visibility_of_element_located((By.ID, "password"))
-)
-password.send_keys("secret_sauce")
+MatchLoss = driver.find_element(By.XPATH,'//p[contains(text(),"Jaipur Pink Panthers")]/../../../..//div[@class="table-data matches-lost"]//p').text
+print("Matches Lost : ", MatchLoss)
 
+MatchDiff = driver.find_element(By.XPATH,'//p[contains(text(),"Jaipur Pink Panthers")]/../../../..//div[@class="table-data score-diff"]//p').text
+print("Score Diff : ", MatchDiff)
 
-login_btn = wait.until(
-    EC.element_to_be_clickable((By.ID, "login-button"))
-)
-login_btn.click()
-
-wait.until(
-    EC.visibility_of_element_located((By.CLASS_NAME, "inventory_list"))
-)
+points = driver.find_element(By.XPATH,'//p[contains(text(),"Jaipur Pink Panthers")]/../../../..//div[@class="table-data points"]//p').text
+print("Table Points : ", points)
 
 driver.quit()
